@@ -20,4 +20,10 @@ class HomeController extends Controller
             'canRegister' => \Illuminate\Support\Facades\Route::has('register'),
         ]);
     }
+    public function show(Car $car)
+    {
+        return Inertia::render('Car/Show', [
+            'car' => $car
+        ]);
+    }
 }
