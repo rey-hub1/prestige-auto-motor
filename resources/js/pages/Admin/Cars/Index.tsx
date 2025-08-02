@@ -70,8 +70,16 @@ export default function Index({ auth, cars }: CarsIndexProps) {
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm capitalize">{car.status}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                         <div className="flex space-x-2">
-                                                            <Link href="#" className="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                                                            <Link href="#" className="text-red-600 hover:text-red-900">Hapus</Link>
+                                                            <Link href={route('admin.cars.edit', car.id)} className="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                                            <Link
+                                                                href={route('admin.cars.destroy', car.id)}
+                                                                method="delete" // Menggunakan metode DELETE
+                                                                as="button"      // Tampil sebagai tombol
+                                                                className="text-red-600 hover:text-red-900"
+                                                                // Munculkan konfirmasi sebelum request dikirim
+                                                                onBefore={() => confirm('Apakah Anda yakin ingin menghapus mobil ini?')}
+                                                            >
+                                                                Hapus</Link>
                                                         </div>
                                                     </td>
                                                 </tr>
