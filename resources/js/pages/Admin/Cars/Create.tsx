@@ -1,6 +1,11 @@
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
-export default function Create() {
+interface User { name: string; }
+interface CreatePageProps {auth: {user : User}}
+
+export default function Create({auth}: CreatePageProps) {
     const { data, setData, post, processing, errors } = useForm({
         brand: '',
         model: '',
@@ -114,3 +119,13 @@ export default function Create() {
         </>
     );
 }
+
+
+Create.layout = (page: React.ReactElement<CreatePageProps>) => (
+    <AdminLayout
+        user={page.props.auth.user}
+        header="Dashboard"
+        children={page}
+    />
+);
+

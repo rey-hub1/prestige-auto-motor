@@ -1,6 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types'; // Kita hanya butuh BreadcrumbItem dari sini
 import { Head, useForm } from '@inertiajs/react';
+import AdminLayout from '@/layouts/admin-layout';
 
 // 1. Definisikan semua tipe data yang kita butuhkan di sini
 interface User {
@@ -44,7 +45,7 @@ const formatRupiah = (number: number) => {
 
 
 export default function Dashboard({ auth, bookings }: DashboardPageProps) {
-    
+
     return (
         // ✅ FIX #2: Hapus prop `user={auth.user}` karena AppLayout tidak membutuhkannya
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -78,4 +79,13 @@ export default function Dashboard({ auth, bookings }: DashboardPageProps) {
             </div>
         </AppLayout>
     );
+
 }
+
+Dashboard.layout = (page: React.ReactElement<DashboardPageProps>) => (
+    <AdminLayout
+        user={page.props.auth.user}
+        header="Dashboard"
+        children={page}
+    />
+);

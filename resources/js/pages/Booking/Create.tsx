@@ -13,6 +13,7 @@ interface BookingCreateProps {
     car: Car;
 }
 
+
 export default function Create({ car }: BookingCreateProps) {
     const { data, setData, post, processing, errors } = useForm({
         car_id: car.id,
@@ -74,3 +75,4 @@ export default function Create({ car }: BookingCreateProps) {
         </>
     );
 }
+

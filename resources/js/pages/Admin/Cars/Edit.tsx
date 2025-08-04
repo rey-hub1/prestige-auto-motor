@@ -1,3 +1,4 @@
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 // Definisikan tipe Car
@@ -15,8 +16,11 @@ interface Car {
     engine_specification: string;
     features: string; // Di form ini, kita terima sebagai string
 }
-
-export default function Edit({ car }: { car: Car }) {
+interface EditPageProps {
+    auth: { user: { name: string } };
+    car: Car;
+}
+export default function Edit({ auth, car }: EditPageProps) {
     // Isi useForm dengan data dari prop 'car'
     const { data, setData, patch, processing, errors } = useForm({
         brand: car.brand,
@@ -77,3 +81,13 @@ export default function Edit({ car }: { car: Car }) {
         </>
     );
 }
+
+
+Edit.layout = (page: React.ReactElement<EditPageProps>) => (
+    <AdminLayout
+        user={page.props.auth.user}
+        header="Dashboard"
+        children={page}
+    />
+);
+

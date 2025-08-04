@@ -1,3 +1,4 @@
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 // Definisikan tipe datanya secara lengkap
@@ -109,3 +110,11 @@ export default function Dashboard({ auth, bookings }: AdminDashboardProps) {
         </>
     );
 }
+
+Dashboard.layout = (page: React.ReactElement<AdminDashboardProps>) => (
+    <AdminLayout
+        user={page.props.auth.user}
+        header="Dashboard"
+        children={page}
+    />
+);

@@ -1,5 +1,6 @@
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link } from '@inertiajs/react';
-
+import React from 'react';
 // Definisikan tipe datanya
 interface Car {
     id: number;
@@ -95,3 +96,13 @@ export default function Index({ auth, cars }: CarsIndexProps) {
         </>
     );
 }
+
+
+Index.layout = (page: React.ReactElement<CarsIndexProps>) => (
+    <AdminLayout
+        user={page.props.auth.user}
+        header="Dashboard"
+        children={page}
+    />
+);
+

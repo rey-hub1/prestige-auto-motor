@@ -1,4 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
+import UserLayout from '@/layouts/user-layout';
+import React from 'react';
 
 // Definisikan tipe datanya
 interface User { id: number; name: string; email: string; }
@@ -102,3 +104,6 @@ export default function MyBookings({ auth, bookings }: MyBookingsPageProps) {
         </>
     );
 }
+
+
+MyBookings.layout = (page : React.ReactElement<MyBookingsPageProps>) => <UserLayout user={page.props.auth.user} children={page} />
