@@ -26,4 +26,13 @@ class HomeController extends Controller
             'car' => $car
         ]);
     }
+
+    public function howItWorks()
+    {
+        return Inertia::render('HowItWorks');
+    }
+    public function contact()
+    {
+        return Inertia::render('Contact');
+    }
 }

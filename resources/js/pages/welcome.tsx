@@ -1,7 +1,10 @@
 // Lokasi: resources/js/Pages/Welcome.tsx
 
+import { Button } from '@/components/Button';
 import UserLayout from '@/layouts/user-layout';
 import { Head, Link } from '@inertiajs/react';
+import { ArrowRight } from 'lucide-react';
+import React from 'react';
 
 // Definisikan tipe untuk objek Car
 interface Car {
@@ -13,6 +16,67 @@ interface Car {
     seating_capacity: number;
     transmission: string;
 }
+interface CategoryCardData {
+    title: string;
+    count: number;
+    imageUrl: string;
+    href: string;
+}
+
+// 2. Buat array yang berisi data untuk setiap kartu
+const categoryData: CategoryCardData[] = [
+    {
+        title: 'Sport',
+        count: 2,
+        imageUrl: '/images/home/categories/sport.png', // Path relatif dari folder 'public'
+        href: '/cars?category=sport',
+    },
+    {
+        title: 'Convertible',
+        count: 0,
+        imageUrl: '/images/home/categories/convertible.png',
+        href: '/cars?category=convertible',
+    },
+    {
+        title: 'Hatchback',
+        count: 1,
+        imageUrl: '/images/home/categories/hatchback.png',
+        href: '/cars?category=hatchback',
+    },
+    {
+        title: 'SUV',
+        count: 3,
+        imageUrl: '/images/home/categories/suv.png',
+        href: '/cars?category=suv',
+    },
+    {
+        title: 'Sedan',
+        count: 7,
+        imageUrl: '/images/home/categories/sedan.png',
+        href: '/cars?category=sedan',
+    },
+];
+
+const CategoryCard: React.FC<{ data: CategoryCardData }> = ({ data }) => {
+    return (
+        <a
+            href={data.href}
+            // Jadikan link ini sebagai container dengan gambar background
+            className="group relative block h-64 w-full overflow-hidden rounded-lg bg-cover bg-center transition-transform duration-300 hover:scale-105"
+            // Set gambar sebagai background lewat inline style
+            style={{ backgroundImage: `url(${data.imageUrl})` }}
+        >
+            {/* Ganti overlay solid menjadi gradient untuk efek yang lebih bagus */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#456E8D]/70 to-[rgba(153,199,233,0.2)]"></div>
+
+            {/* Pindahkan teks ke bawah dan gunakan flexbox */}
+            <div className="absolute top-4 left-4 flex flex-col items-baseline space-x-2 text-white">
+                <p className="text-lg font-bold">{data.count} car</p>
+                <h3 className="text-2xl font-extrabold">{data.title}</h3>
+            </div>
+        </a>
+    );
+};
 
 // Definisikan tipe untuk props yang diterima halaman Welcome
 // `cars` adalah props yang kita kirim dari HomeController
@@ -64,22 +128,23 @@ export default function Welcome({ auth, cars }: WelcomeProps) {
         <>
             <Head title="Welcome" />
             <div className="min-h-screen">
-                <section className="relative px-6 py-16">
+                <section className="relative pt-36 pb-20">
                     <div className="mx-auto flex max-w-6xl items-center">
-                        <div className="flex-1">
-                            <h1 className='text-4xl'><span className='text-primary'>No.1 </span>Premium Car Rental In Bali</h1>
+                        <div className="w-[40vw] flex flex-col gap-2">
+                            <h1 className="text-5xl">
+                                <span className="text-primary">No.1 </span>Premium Car Rental In Bali
+                            </h1>
                             <p>Wujudkan pengalaman berkendara terbaikmu di Bali dengan mobil premium pilihan kami.</p>
+                            <Button variant="primary">Lihat Koleksi Mobil</Button>
                         </div>
 
                         {/* Car Image Placeholder */}
-                        <div className="flex flex-2 justify-end">
-                            <div className="h-48 w-96 rounded-lg bg-gray-300"></div>
-                        </div>
+                        <img src="/images/home/poce.png" className='absolute top-1/2 right-0 -translate-y-1/2 h-[35vw]'  alt="" />
                     </div>
                 </section>
 
                 {/* Brand Logos */}
-                <section className="bg-white px-6 py-8">
+                {/* <section className="px-6 py-8">
                     <div className="mx-auto max-w-6xl">
                         <div className="flex justify-center space-x-12">
                             {[...Array(7)].map((_, i) => (
@@ -87,61 +152,59 @@ export default function Welcome({ auth, cars }: WelcomeProps) {
                             ))}
                         </div>
                     </div>
-                </section>
+                </section> */}
 
                 {/* Browse by Type */}
-                <section className="bg-gray-50 px-6 py-12">
+                <section className="px-6 py-12">
                     <div className="mx-auto max-w-6xl">
                         <div className="mb-8 flex items-center justify-between">
-                            <div className="h-6 w-32 rounded bg-gray-800"></div>
-                            <div className="h-4 w-16 rounded bg-blue-500"></div>
+                            <h2 className='text-xl'>Browse By Type</h2>
+                            <a className='flex flex-row items-center' href="">Lihat semua<ArrowRight className='h-4'/> </a>
+                            {/* Belum ada page all car */}
+                            {/* <Link href={route('')} className="text-sm text-blue-500 hover:underline">
+                                Lihat Semua
+                            </Link> */}
                         </div>
 
                         <div className="grid grid-cols-5 gap-6">
-                            {['Sport', 'Convertible', 'Hatchback', 'SUV', 'Sedan'].map((type, i) => (
-                                <div key={i} className="rounded-lg border bg-white p-4">
-                                    <div className="mb-4 h-32 w-full rounded bg-gray-300"></div>
-                                    <div className="mb-1 h-4 w-8 rounded bg-gray-600"></div>
-                                    <div className="h-3 w-16 rounded bg-gray-400"></div>
-                                </div>
+                            {categoryData.map((category) => (
+                                <CategoryCard key={category.title} data={category} />
                             ))}
                         </div>
                     </div>
                 </section>
 
                 {/* Trend Vehicle */}
-                <section className="bg-white px-6 py-12">
+                <section className="px-6 py-12">
                     <div className="mx-auto max-w-6xl">
-                        <div className="mb-8 h-6 w-32 rounded bg-gray-800"></div>
+                        <h2 className='text-xl'>Trend Vechicle</h2>
 
                         <div className="grid grid-cols-4 gap-6">
                             {[...Array(4)].map((_, i) => (
                                 <div key={i} className="rounded-lg border border-gray-200 bg-white p-6">
-                                    <div className="mb-1 h-4 w-24 rounded bg-gray-600"></div>
-                                    <div className="mb-6 h-3 w-12 rounded bg-gray-400"></div>
+                                    <h3>Aston Martin dbs</h3>
 
-                                    <div className="mb-6 h-32 w-full rounded bg-gray-300"></div>
+                                    <div className="mb-6 w-full rounded ">
+                                        <img src="/images/home/dbst.png" alt="" />
+                                    </div>
 
                                     <div className="mb-4 flex items-center justify-between text-sm">
                                         <div className="flex items-center space-x-4">
                                             <div className="flex items-center space-x-1">
-                                                <div className="h-3 w-3 rounded-full bg-gray-400"></div>
-                                                <div className="h-3 w-6 rounded bg-gray-400"></div>
+                                                <p>55L</p>
                                             </div>
                                             <div className="flex items-center space-x-1">
-                                                <div className="h-3 w-3 rounded-full bg-gray-400"></div>
-                                                <div className="h-3 w-12 rounded bg-gray-400"></div>
+                                                <p>Manual</p>
                                             </div>
-                                            <div className="flex items-center space-x-1">
-                                                <div className="h-3 w-3 rounded-full bg-gray-400"></div>
-                                                <div className="h-3 w-12 rounded bg-gray-400"></div>
-                                            </div>
+                                            <div className="flex items-center space-x-1">4 People</div>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <div className="h-6 w-20 rounded bg-gray-600"></div>
-                                        <div className="h-8 w-16 rounded bg-blue-500"></div>
+                                        <p className="text-xl">
+                                            Rp.3,5Jt/<span className="text-base">hari</span>
+                                        </p>
+                                        <Button>Rent Now</Button>
                                     </div>
                                 </div>
                             ))}
@@ -150,47 +213,6 @@ export default function Welcome({ auth, cars }: WelcomeProps) {
                 </section>
 
                 {/* Footer */}
-                <footer className="bg-gray-800 px-6 py-12 text-white">
-                    <div className="mx-auto max-w-6xl">
-                        <div className="grid grid-cols-4 gap-8">
-                            {/* Company Info */}
-                            <div>
-                                <div className="mb-4 h-8 w-32 rounded bg-gray-600"></div>
-                                <div className="h-12 w-48 rounded bg-gray-600"></div>
-                            </div>
-
-                            {/* About */}
-                            <div>
-                                <div className="mb-4 h-5 w-16 rounded bg-gray-500"></div>
-                                <div className="space-y-2">
-                                    {[...Array(3)].map((_, i) => (
-                                        <div key={i} className="h-4 w-24 rounded bg-gray-600"></div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Community */}
-                            <div>
-                                <div className="mb-4 h-5 w-20 rounded bg-gray-500"></div>
-                                <div className="space-y-2">
-                                    {[...Array(3)].map((_, i) => (
-                                        <div key={i} className="h-4 w-28 rounded bg-gray-600"></div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Social */}
-                            <div>
-                                <div className="mb-4 h-5 w-16 rounded bg-gray-500"></div>
-                                <div className="space-y-2">
-                                    {[...Array(3)].map((_, i) => (
-                                        <div key={i} className="h-4 w-20 rounded bg-gray-600"></div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
             <div className="min-h-screen bg-gray-100">
                 <header className="bg-white p-4 shadow-md">

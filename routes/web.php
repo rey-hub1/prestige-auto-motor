@@ -12,6 +12,8 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/mobil/{car}', [HomeController::class, 'show'])->name('car.show');
+Route::get('/howitwork', [HomeController::class, 'howItWorks'])->name('how-it-work');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 
 // Route::get('/', function () {

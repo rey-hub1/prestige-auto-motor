@@ -21,6 +21,7 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
+    --color-normal : var(--normal);
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 
@@ -68,19 +69,18 @@
 
 html{
     background-color: var(--background);
+    color: var(--primary-foreground);
 }
 h1,h2,h3,h4,h5,h6  {
-    color: var(--primary-foreground);
     font-family: "Montserrat" ;
     font-weight: bold;
 }
 p{
-    color: var(--primary-foreground);
     font-family: 'Hind';
 }
 
 :root {
-
+    --normal : #fff ;
     --background: #F2F7FB;
     --foreground: #060B0E;
     --card: oklch(1 0 0);
