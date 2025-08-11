@@ -20,7 +20,7 @@ export default function UserLayout({ user, children }: UserLayoutProps) {
         <div className="flex flex-col bg-gray-100 min-h-[100vh]">
             <Head>
                 <title>Prestige Auto Motor</title>
-                <meta name="description" content="Premium Car Rental in Bali." />
+                <meta name="description" content="Premium Cars Rental in Bali." />
             </Head>
            <Navbar user={user} />
 
