@@ -20,6 +20,7 @@ class Car extends Model
         'features',
         'image_url',
         'status',
+        'stock',
     ];
 
     protected $casts = [

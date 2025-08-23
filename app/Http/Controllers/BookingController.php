@@ -36,8 +36,37 @@ class BookingController extends Controller
             $request->validate([
 
                 'car_id' => 'required|exists:cars,id',
-                'start_date' => 'required|date|after_or_equal:today',
-                'end_date' => 'required|date|after:start_date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'start_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:today',
+                    // Costum double checcking func
+                    function ($attribute, $value, $fail) use ($request) {
+
+                        $car = Car::find($request->car_id);
+                        if(!$car){
+                            return;
+                        }
+                        $BookedCount = Booking::where('car_id', $request->car_id)
+                            ->where(function ($query) use ($request) {
+                                $query->where(function ($q) use ($request) {
+                                    $q->where('start_date', '<=', $request->start_date)
+                                        ->where('end_date', '>=', $request->start_date);
+                                })->orWhere(function ($q) use ($request) {
+                                    $q->where('start_date', '<=', $request->end_date)
+                                        ->where('end_date', '>=', $request->end_date);
+                                })->orWhere(function ($q) use ($request) {
+                                    $q->where('start_date', '>=', $request->start_date)
+                                        ->where('end_date', '<=', $request->end_date);
+                                });
+                            })
+                            ->count();
+                        if ($BookedCount >= $car->stock) {
+                            $fail('Mobil tidak tersedia pada rentang tanggal yang dipilih.');
+                        }
+                    }
+                ],
             ]);
         } catch (ValidationException $e) {
             dd($e->errors());
@@ -62,8 +91,9 @@ class BookingController extends Controller
         return to_route('admin.dashboard')->with('message', 'Booling berhasil');
     }
 
-    public function pay(Request $request, Booking $booking) {
-        if($request->user()->id !== $booking->user_id){
+    public function pay(Request $request, Booking $booking)
+    {
+        if ($request->user()->id !== $booking->user_id) {
             abort(403, 'UNAUTHORIZED ACTION');
         }
 
@@ -81,5 +111,25 @@ class BookingController extends Controller
         $whatsappUrl = 'https://wa.me/' . env('ADMIN_WHATSAPP_NUMBER') . '?text=' . urlencode($message);
 
         return redirect()->away($whatsappUrl);
+    }
+
+    public function cancelByUser(Request $request, Booking $booking)
+    {
+        // Kemaanan: memastikan yang mau batalin yang punya nya
+        if ($request->user()->id !== $booking->user_id){
+            abort(403, 'UNAUTHORIZED ACTION');
+        }
+
+        //  check mastiin cuma pending yang bisa di batalin
+        if($booking->status !== 'pending'){
+            // Kalo udah di confirm, ga bisa di  batalin
+            return to_route('my-bookings')->with('error', 'Booking yang sudah di konfirmasi tidak bisa di batalakan');
+        }
+
+        $booking->update(['status' => 'cancelled']);
+
+        return to_route('my-bookings')->with('massage', 'Booking berhasil dibatalkan.');
+
+
     }
 }

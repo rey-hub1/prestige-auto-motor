@@ -38,6 +38,8 @@ class CarController extends Controller
             'seating_capacity' => 'required|integer|min:1',
             'engine_specification' => 'required|string|max:255',
             'features' => 'required|string',
+            'stock' => 'required|integer|min:0' 
+
         ]);
 
         $validateData['features'] = json_decode($validateData['features'], true);

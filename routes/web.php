@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/booking/{car}', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/booking/{booking}/pay', [BookingController::class, 'pay'])->name('booking.pay');
+    Route::patch('/booking/{booking}/cancel', [BookingController::class, 'cancelByUser'])->name('booking.cancel.user');
 
     Route::get('/my-bookings', [BookingController::class, 'index'])->name('my-bookings');
 });

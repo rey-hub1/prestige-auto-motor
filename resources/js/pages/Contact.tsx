@@ -6,6 +6,7 @@ interface ContactProps {
     auth: {
         user: { name: string; email: string } | null;
     };
+    
 }
 
 export default function Contact({ auth }: ContactProps) {

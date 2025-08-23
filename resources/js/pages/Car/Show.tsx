@@ -17,6 +17,7 @@ interface Car {
     engine_specification: string;
     features: string[]; // Ini adalah array dari string
     image_url: string | null;
+    stock: number;
 }
 
 interface User {
@@ -86,12 +87,12 @@ export default function Show({ auth, car }: ShowProps) {
                     <div className="mx-auto max-w-5xl">
                         <div className="mb-8 flex items-center justify-between">
                             <div>
-                                <h2 className="mb-2 text-3xl font-bold text-gray-900">Koenigsegg Jesko</h2>
+                                <h2 className="mb-2 text-3xl font-bold text-gray-900">{car.brand} {car.model}</h2>
                                 <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-500">Sport</span>
                             </div>
                             <div className="flex items-center space-x-4">
                                 <div className="text-right">
-                                    <span className="text-2xl font-bold text-gray-900">Rp 3.537</span>
+                                    <span className="text-2xl font-bold text-gray-900">Rp {car.price_per_day}</span>
                                     <span className="text-gray-500">/hari</span>
                                 </div>
                                 {auth.user ? (
@@ -137,37 +138,37 @@ export default function Show({ auth, car }: ShowProps) {
                                         <div className="flex items-center space-x-4">
                                             <Settings className="h-5 w-5 text-gray-500" />
                                             <div className="flex-1">
-                                                <span className="text-gray-600">2.5L (2,494 cc) 4-Silinder</span>
+                                                <span className="text-gray-600">{car.engine_specification}</span>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-4">
                                             <Fuel className="h-5 w-5 text-gray-500" />
                                             <div className="flex-1">
-                                                <span className="text-gray-600">55L Bensin Pertamax</span>
+                                                <span className="text-gray-600">55L {car.fuel_type}</span>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-4">
                                             <div className="h-5 w-5 rounded-full bg-gray-500"></div>
                                             <div className="flex-1">
-                                                <span className="text-gray-600">Hitam Metalik</span>
+                                                <span className="text-gray-600">{car.color}</span>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-4">
                                             <Calendar className="h-5 w-5 text-gray-500" />
                                             <div className="flex-1">
-                                                <span className="text-gray-600">2023</span>
+                                                <span className="text-gray-600">{car.year}</span>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-4">
                                             <Settings className="h-5 w-5 text-gray-500" />
                                             <div className="flex-1">
-                                                <span className="text-gray-600">Otomatis (CVT)</span>
+                                                <span className="text-gray-600">{car.transmission}</span>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-4">
                                             <Users className="h-5 w-5 text-gray-500" />
                                             <div className="flex-1">
-                                                <span className="text-gray-600">4 People</span>
+                                                <span className="text-gray-600">{car.seating_capacity}</span>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-4">
@@ -393,11 +394,11 @@ export default function Show({ auth, car }: ShowProps) {
                                 </div>
                                 <div>
                                     <h3 className="mb-3 text-xl font-semibold">Fitur Unggulan</h3>
-                                    <ul className="list-inside list-disc space-y-2 text-gray-700">
+                                    {/* <ul className="list-inside list-disc space-y-2 text-gray-700">
                                         {featuresArray.map((feature: any, index: any) => (
                                             <li key={index}>{feature}</li>
                                         ))}
-                                    </ul>
+                                    </ul> */}
                                 </div>
                             </div>
                         </div>

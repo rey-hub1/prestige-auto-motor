@@ -23,7 +23,7 @@ export default function Navbar({ user }: NavbarProps) {
 
                 {/* Navigation */}
                 <nav className="flex space-x-8">
-                    <Example />
+                    <NavigationMenuDemo />
                 </nav>
 
                 {/* Auth Links */}
@@ -59,31 +59,71 @@ export default function Navbar({ user }: NavbarProps) {
 
 ('use client');
 
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
-import clsx from 'clsx';
-import { ChevronDown } from 'lucide-react';
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu';
 
-function Example() {
+export function NavigationMenuDemo() {
     return (
-        <div className="flex gap-8">
-            <div className="text-sm/6 font-semibold text-foreground">Products</div>
-            <Link href={route('home')}>Home</Link>
-            <Popover className="group">
-                {({ open }) => (
-                    <>
-                        <PopoverButton className="flex items-center gap-2">
-                            Solutions
-                            <ChevronDown className={clsx('size-5', open && 'rotate-180')} />
-                        </PopoverButton>
-                        <PopoverPanel anchor="bottom" className="flex flex-col">
-                            <a href="/insights">Insights</a>
-                            <a href="/automations">Automations</a>
-                            <a href="/reports">Reports</a>
-                        </PopoverPanel>
-                    </>
-                )}
-            </Popover>
-            <div className="text-sm/6 font-semibold">Pricing</div>
-        </div>
+        <NavigationMenu viewport={false}>
+            <NavigationMenuList>
+                <NavigationMenuItem>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                        <Link href="/docs">Home</Link>
+                    </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>List</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid w-[300px] gap-4">
+                            <li>
+                                <NavigationMenuLink asChild>
+                                    <Link href="#">
+                                        <div className="font-medium">Components</div>
+                                        <div className="text-muted-foreground">Browse all components in the library.</div>
+                                    </Link>
+                                </NavigationMenuLink>
+                                <NavigationMenuLink asChild>
+                                    <Link href="#">
+                                        <div className="font-medium">Documentation</div>
+                                        <div className="text-muted-foreground">Learn how to use the library.</div>
+                                    </Link>
+                                </NavigationMenuLink>
+                                <NavigationMenuLink asChild>
+                                    <Link href="#">
+                                        <div className="font-medium">Blog</div>
+                                        <div className="text-muted-foreground">Read our latest blog posts.</div>
+                                    </Link>
+                                </NavigationMenuLink>
+                            </li>
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>Simple</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid w-[200px] gap-4">
+                            <li>
+                                <NavigationMenuLink asChild>
+                                    <Link href="#">Components</Link>
+                                </NavigationMenuLink>
+                                <NavigationMenuLink asChild>
+                                    <Link href="#">Documentation</Link>
+                                </NavigationMenuLink>
+                                <NavigationMenuLink asChild>
+                                    <Link href="#">Blocks</Link>
+                                </NavigationMenuLink>
+                            </li>
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+            </NavigationMenuList>
+        </NavigationMenu>
     );
 }
