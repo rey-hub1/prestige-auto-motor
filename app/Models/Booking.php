@@ -11,13 +11,14 @@ class Booking extends Model
     //
     use HasFactory;
 
-    protected $fillable =[
+    protected $fillable = [
         'user_id',
         'car_id',
         'start_date',
         'end_date',
         'total_price',
         'status',
+        'cancellation_reason',
     ];
 
     public function car(): BelongsTo

@@ -43,6 +43,7 @@ export default function MyBookings({ auth, bookings }: MyBookingsPageProps) {
         if (status === 'cancelled') return 'bg-red-200 text-red-800';
         return 'bg-gray-200 text-gray-800';
     };
+
     return (
         <>
             <Head title="My Bookings" />
@@ -81,10 +82,11 @@ export default function MyBookings({ auth, bookings }: MyBookingsPageProps) {
                                                             {booking.status.replace('_', ' ')}
                                                         </span>
                                                     </div>
+                                                    {/* Tampilkan blok ini HANYA JIKA statusnya 'cancelled' DAN ada alasannya */}
                                                     {booking.status === 'cancelled' && booking.cancellation_reason && (
-                                                        <div className="mt-2 border-l-4 border-red-400 bg-red-50 p-2 text-red-700 dark:bg-red-900/20 dark:text-red-300">
-                                                            <p className="font-bold">Alasan Pembatalan:</p>
-                                                            <p>{booking.cancellation_reason}</p>
+                                                        <div className="mt-3 border-t pt-3">
+                                                            <p className="text-sm font-bold text-red-700">Alasan Pembatalan:</p>
+                                                            <p className="text-sm text-gray-600">{booking.cancellation_reason}</p>
                                                         </div>
                                                     )}
                                                     {booking.status === 'waiting_payment' && (

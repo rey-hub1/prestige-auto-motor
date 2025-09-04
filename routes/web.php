@@ -3,18 +3,15 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookingController;
-
-use App\Models\Car;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CarIndexController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/mobil/{car}', [HomeController::class, 'show'])->name('car.show');
 Route::get('/howitwork', [HomeController::class, 'howItWorks'])->name('how-it-work');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
+Route::get('/cars', [CarIndexController::class, 'index'])->name('cars.index');
 
 // Route::get('/', function () {
 //     return Inertia::render('welcome');
@@ -33,10 +30,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::patch('/bookings/{booking}/confirm', [DashboardController::class, 'confirm'])->name('booking.confirm');
+    Route::patch('/bookings/{booking}/confirm', [DashboardController::class,  'confirm'])->name('booking.confirm');
     Route::patch('/bookings/{booking}/cancel', [DashboardController::class, 'cancel'])->name('booking.cancel');
 
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // ... rute lain ...
+   Route::resource('cars', \App\Http\Controllers\Admin\CarController::class);
     Route::resource('cars', \App\Http\Controllers\Admin\CarController::class);
+    // Bikin rute 'update' manual yang nerima POST dan dikasih nama
+
+
 });
 
 require __DIR__ . '/settings.php';

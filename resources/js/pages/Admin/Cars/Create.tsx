@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface User {
     name: string;
@@ -24,10 +24,23 @@ export default function Create({ auth }: CreatePageProps) {
         // Fitur diinput sebagai teks, dipisahkan koma
         features: 'Captain Seats, Leather Seats, Sunroof',
         stock: 1,
+        image_url: null as File | null,
     });
+
+    // state buat nampilin gambar
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('image_url', file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    }
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+        // Inertia otatis kirim sebagai multipart/form data
         post(route('admin.cars.store'));
     };
 
@@ -225,6 +238,37 @@ export default function Create({ auth }: CreatePageProps) {
                             />
                             {errors.stock && <p className="mt-1 text-sm text-red-500">{errors.stock}</p>}
                         </div>
+
+                        <div className="flex justify-end">
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
+                            >
+                                Simpan Mobil
+                            </button>
+                        </div>
+                        {/* Input untuk Upload Gambar */}
+                        <div>
+                            <label htmlFor="image_url" className="block text-sm font-medium text-gray-700">
+                                Foto Mobil
+                            </label>
+                            <input
+                                type="file"
+                                id="image_url"
+                                onChange={handleImageChange}
+                                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+                            />
+                            {errors.image_url && <p className="mt-1 text-sm text-red-500">{errors.image_url}</p>}
+                        </div>
+
+                        {/* Preview Gambar */}
+                        {imagePreview && (
+                            <div>
+                                <p className="mb-2 text-sm font-medium text-gray-700">Preview:</p>
+                                <img src={imagePreview} alt="Image Preview" className="h-auto w-48 rounded-md border" />
+                            </div>
+                        )}
 
                         <div className="flex justify-end">
                             <button

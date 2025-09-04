@@ -128,7 +128,7 @@ class BookingController extends Controller
 
         $booking->update(['status' => 'cancelled']);
 
-        return to_route('my-bookings')->with('massage', 'Booking berhasil dibatalkan.');
+        return to_route('my-bookings')->with('message', 'Booking berhasil dibatalkan.');
 
 
     }

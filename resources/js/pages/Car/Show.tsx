@@ -63,21 +63,16 @@ export default function Show({ auth, car }: ShowProps) {
                 {/* Car Image Section */}
                 <section className="relative bg-gradient-to-br from-gray-200 via-gray-100 to-white px-6 py-16">
                     <div className="mx-auto max-w-5xl">
-                        {/* Car Image with Overlay Effect */}
-                        <div className="relative">
-                            <div className="h-80 w-full overflow-hidden rounded-2xl bg-gradient-to-r from-gray-800 to-gray-700 shadow-2xl">
-                                {/* Car silhouette with blend mode overlay effect */}
-                                <div className="relative h-full w-full bg-gradient-to-br from-gray-600 via-gray-500 to-gray-400 mix-blend-overlay">
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        {/* Stylized car shape */}
-                                        <div className="relative">
-                                            <div className="h-24 w-96 -rotate-1 transform rounded-full bg-gray-900 opacity-80"></div>
-                                            <div className="absolute top-4 left-8 h-16 w-80 rounded-full bg-gray-800 opacity-60"></div>
-                                            <div className="absolute top-6 left-16 h-12 w-64 rounded-full bg-gray-700 opacity-40"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                          <div className="w-full h-80 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                            {car.image_url ? (
+                                <img
+                                    src={car.image_url}
+                                    alt={`Gambar ${car.brand} ${car.model}`}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <span className="text-gray-500">No Image Available</span>
+                            )}
                         </div>
                     </div>
                 </section>

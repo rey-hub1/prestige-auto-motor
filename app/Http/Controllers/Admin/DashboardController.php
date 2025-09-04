@@ -32,7 +32,7 @@ class DashboardController extends Controller
         ]);
 
         $booking->update([
-            'status' => "cacelled",
+            'status' => "cancelled",
             'cancellation_reason' => $request->cancellation_reason,
         ]);
 

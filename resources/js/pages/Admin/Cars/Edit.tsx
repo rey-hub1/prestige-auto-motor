@@ -1,5 +1,7 @@
 import AdminLayout from '@/layouts/admin-layout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { LargeNumberLike } from 'crypto';
+import { useState } from 'react';
 
 // Definisikan tipe Car
 interface Car {
@@ -15,6 +17,8 @@ interface Car {
     seating_capacity: number;
     engine_specification: string;
     features: string; // Di form ini, kita terima sebagai string
+    stock: number;
+    image_url: string | null;
 }
 interface EditPageProps {
     auth: { user: { name: string } };
@@ -22,7 +26,7 @@ interface EditPageProps {
 }
 export default function Edit({ auth, car }: EditPageProps) {
     // Isi useForm dengan data dari prop 'car'
-    const { data, setData, patch, processing, errors } = useForm({
+    const { data, setData, processing, errors } = useForm({
         brand: car.brand,
         model: car.model,
         category: car.category,
@@ -34,12 +38,27 @@ export default function Edit({ auth, car }: EditPageProps) {
         seating_capacity: car.seating_capacity,
         engine_specification: car.engine_specification,
         features: car.features,
+        image_url: null as File | null,
+
     });
+
+    const [imagePreview, setImagePreview] = useState<string |null>(car.image_url);
+
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
+        const file = e.target.files?.[0];
+        if(file){
+            setData('image_url', file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    }
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         // Gunakan method 'patch' untuk update
-        patch(route('admin.cars.update', car.id));
+          router.post(route('admin.cars.update', car.id), {
+            _method: 'patch', // Ini bilang ke Laravel, "Bro, ini sebenernya PATCH"
+            ...data,          // Kirim semua datanya
+        });
     };
 
     return (
@@ -70,11 +89,30 @@ export default function Edit({ auth, car }: EditPageProps) {
                         </div>
                         {/* ... Lanjutkan untuk semua field lainnya ... */}
 
-                        <div className="flex justify-end">
-                            <button type="submit" disabled={processing} className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400">
-                                Update Mobil
-                            </button>
-                        </div>
+
+                        {/* Gambar */}
+                        <div>
+                        <label className="block text-sm font-medium text-gray-700">Foto Mobil</label>
+                        {/* Tampilkan gambar lama/preview gambar baru */}
+                        {imagePreview && (
+                            <div className="mt-2">
+                                <img src={imagePreview} alt="Preview" className="w-48 h-auto rounded-md border" />
+                            </div>
+                        )}
+                        <input
+                            type="file"
+                            onChange={handleImageChange}
+                            className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Kosongkan jika tidak ingin mengganti gambar.</p>
+                        {errors.image_url && <p className="text-sm text-red-500 mt-1">{errors.image_url}</p>}
+                    </div>
+
+                    <div className="flex justify-end">
+                        <button type="submit" disabled={processing} className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400">
+                            Update Mobil
+                        </button>
+                    </div>
                     </form>
                 </div>
             </div>
